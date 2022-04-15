@@ -1,7 +1,9 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { User } from 'src/decorator/user.decorator';
 import { AuthLoginDto } from 'src/users/dto/user.dto';
 import { AuthService } from './auth.service';
+import { UserGuard } from './guards/user.guard';
 import { JwtAuthGuard } from './passport/jwt-auth.guard';
 
 @Controller('auth')
@@ -14,9 +16,9 @@ export class AuthController {
 	}
 
 	@ApiBearerAuth()
-	@UseGuards(JwtAuthGuard)
-	@Get()
-	async test() {
-		return 'ok';
+	@UseGuards(UserGuard)
+	@Get('login-test')
+	async test(@User() userId: string) {
+		return userId;
 	}
 }

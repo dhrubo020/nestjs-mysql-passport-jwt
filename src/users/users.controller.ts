@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { UserGuard } from 'src/auth/guards/user.guard';
 import { JwtAuthGuard } from 'src/auth/passport/jwt-auth.guard';
 import { User } from 'src/decorator/user.decorator';
 import { CreateUserDto } from './dto/user.dto';

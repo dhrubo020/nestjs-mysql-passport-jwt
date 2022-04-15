@@ -15,7 +15,7 @@ export class AuthService {
 			logInTime: Date.now(),
 		};
 		return {
-			access_token: this.jwtService.sign(payload),
+			access_token: this.jwtService.sign(payload, { expiresIn: '60s' }),
 		};
 	}
 
