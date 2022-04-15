@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { AllExceptionsFilter } from './utils/response/exception';
+import { GlobalResponseTransformer } from './utils/response/response';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -19,6 +21,10 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('api', app, document);
 
-	await app.listen(3000, () => console.log(`http://localhost:${3000}/api`));
+	app.useGlobalFilters(new AllExceptionsFilter());
+	app.useGlobalInterceptors(new GlobalResponseTransformer());
+
+	await app.listen(4000, () => console.log(`http://localhost:${4000}/api`));
 }
 bootstrap();
+

@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthLoginDto } from 'src/users/dto/user.dto';
 import { User } from 'src/users/user.entity';
@@ -23,12 +23,16 @@ export class AuthService {
 		const { email, password } = authLoginDto;
 		const user = await this.userService.findByEmail(email);
 		if (!user) {
-			throw new UnauthorizedException();
+			throw new HttpException('Authentication Error. Invalid User!', HttpStatus.UNAUTHORIZED);
 		}
 
 		if (!(await user?.validatePassword(password))) {
-			throw new UnauthorizedException();
+			throw new HttpException(
+				'Authentication Error. Invalid password!',
+				HttpStatus.UNAUTHORIZED,
+			);
 		}
 		return user;
 	}
 }
+
